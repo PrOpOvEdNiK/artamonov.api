@@ -81,9 +81,10 @@ class Controller extends Router
         } else {
 
             $path = __DIR__ . DIRECTORY_SEPARATOR . self::ROOT_DIR_CONTROLLERS . DIRECTORY_SEPARATOR . strtolower(parent::getController()) . '.php';
-
-            if (file_exists($path)) {
-                $controller = __NAMESPACE__ . '\\' . self::ROOT_DIR_CONTROLLERS . '\\' . ucfirst(strtolower(parent::getController()));
+            $class = __NAMESPACE__ . '\\' . ucfirst(strtolower(self::ROOT_DIR_CONTROLLERS)) . '\\' . ucfirst(strtolower(parent::getController()));
+            
+            if (file_exists($path) || class_exists($class)) {
+                $controller = $class;
             } else {
                 Response::BadRequest(Loc::getMessage('CLASS_NOT_FOUND', ['#OBJECT#' => ucfirst(parent::getController())]));
             }
